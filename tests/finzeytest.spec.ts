@@ -10,7 +10,7 @@ test.beforeEach('login successfully', async ({page}) => {
     await page.locator("//button[@type='submit']").click();
 
 });
-test('add profession', async ({page}) => {
+test('Add profession', async ({page}) => {
     await page.locator("//span[normalize-space()='Master Data']").click();
     await page.locator("//span[normalize-space()='Professions']").click();
     await page.locator("//span[normalize-space()='Create New']").click();
@@ -18,18 +18,22 @@ test('add profession', async ({page}) => {
     await page.locator("(//input[@type='text'])[2]").fill("prof");
     await page.locator("input[role='spinbutton']").fill("15");
     await page.locator("//span[@class='p-inputswitch-slider']").click()
+    await page.locator('li').filter({ hasText: 'Save' }).first().click();
 
 });
-test('edit profession', async ({page}) => {
+test('Edit profession', async ({page}) => {
     await page.locator("//span[normalize-space()='Master Data']").click();
     await page.locator("//span[normalize-space()='Professions']").click();
     await page.locator("//a[normalize-space()='0001']").click();
-    await page.locator("//span[normalize-space()='Edit']").click();
-    await page.locator("(//input[@type='text'])[2]").clear();
-    await page.locator("(//input[@type='text'])[2]").fill("profession_01");
-    await page.locator("//span[normalize-space()='Save']").click()
-    await page.locator("//span[normalize-space()='Back to list']").click()
-    await page.locator("//a[normalize-space()='0001']").click();
-    let en_desc = await page.locator("//span[contains(text(),'profession_01')]")
-    await expect(en_desc).toHaveText("profession_01");
+    await page.locator('li').filter({ hasText: 'Edit' }).click();
+         await page.locator('div').filter({ hasText: /^English Description$/ }).getByRole('textbox').fill('profession_01');
+    await page.locator('li').filter({ hasText: 'Save' }).first().click();
+ 
+  })
+  test('Delete profession', async ({page}) => {
+    await page.locator("//span[normalize-space()='Master Data']").click();
+    await page.locator("//span[normalize-space()='Professions']").click();
+    await page.locator("(//actions[@class='ng-star-inserted'])[2]").click();
+    await page.locator("//span[normalize-space()='Delete']").click();
+    await page.locator("//span[normalize-space()='Yes']").click();
 })
